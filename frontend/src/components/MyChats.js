@@ -5,11 +5,13 @@ import React, { useEffect, useState } from 'react'
 import { getSender } from '../config/chatLogics';
 import { ChatState } from '../Context/ChatProvider';
 import ChatLoading from "./chatLoading";
+import GroupChatModal from './miscellanious/GroupChatModal';
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
   const toast = useToast();
+  
 
   const fetchChats = async () => {
     // console.log(user._id);
@@ -62,6 +64,7 @@ const MyChats = () => {
         justifyContent="space-between"
         alignItems="center"
       >My CHATS
+      <GroupChatModal>
       <Button
             d="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -69,6 +72,7 @@ const MyChats = () => {
           >
             New Group Chat
           </Button>
+      </GroupChatModal>
         </Box>
         <Box
         d="flex"
