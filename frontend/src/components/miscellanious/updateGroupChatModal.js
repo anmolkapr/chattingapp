@@ -193,8 +193,11 @@ const UpdateGroupChat = ({fetchAgain,setFetchAgain}) => {
             <ModalOverlay />
             <ModalContent>
               <ModalHeader fontSize="35px" fontFamily="Work sans" d="flex"
-              justifyContent="center">{selectedChat.chatName}</ModalHeader>
+              justifyContent="center">{selectedChat.chatName} </ModalHeader>
+              <ModalHeader fontSize="15x" fontFamily="Work sans" d="flex"
+              justifyContent="center">ADMIN = {selectedChat.groupAdmin.name} </ModalHeader>
               <ModalCloseButton />
+              
               <ModalBody>
                 <Box w="100%" d="flex" flexWrap="wrap" pb={3}>{selectedChat.users.map((u) => (
                 <UserBadgeItem
