@@ -6,7 +6,7 @@ import UserBadgeItem from '../userAvatar/UserBadgeItem';
 import axios from "axios";
 import UserListItem from "../userAvatar/userListItem";
 
-const UpdateGroupChat = ({fetchAgain,setFetchAgain}) => {
+const UpdateGroupChat = ({fetchAgain,setFetchAgain,fetchMessages}) => {
   const [renameloading, setRenameLoading] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [groupChatName, setGroupChatName] = useState();
@@ -47,6 +47,7 @@ const UpdateGroupChat = ({fetchAgain,setFetchAgain}) => {
 
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
+      fetchMessages();
       setLoading(false);
     } catch (error) {
       toast({
