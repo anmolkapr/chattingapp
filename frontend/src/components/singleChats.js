@@ -8,6 +8,10 @@ import ProfileModal from './miscellanious/ProfileModal';
 import UpdateGroupChatModal from "./miscellanious/updateGroupChatModal";
 import ScrollableChat from './ScrollableChat';
 import "./styles.css";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+var socket, selectedChatCompare;
 
 const SingleChats = ({setFetchAgain,fetchAgain}) => {
   const [messages, setMessages] = useState([]);
@@ -15,6 +19,7 @@ const SingleChats = ({setFetchAgain,fetchAgain}) => {
   const [newMessage, setNewMessage] = useState("");
   const {user,selectedChat,setSelectedChat} = ChatState();
   const toast = useToast();
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const sendMessage = async(event) =>{
     if (event.key === "Enter" && newMessage){
@@ -36,7 +41,9 @@ const SingleChats = ({setFetchAgain,fetchAgain}) => {
         config
       );
       console.log(data);
+      socket.emit("new message", data);
       setMessages([...messages, data]);
+      
     }catch(error){
       toast({
         title: "Error Occured!",
@@ -49,6 +56,12 @@ const SingleChats = ({setFetchAgain,fetchAgain}) => {
     }
 
   }}
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+      }, []);
 
   const typingHandler = (e) =>{
     setNewMessage(e.target.value);
@@ -75,7 +88,8 @@ const SingleChats = ({setFetchAgain,fetchAgain}) => {
       console.log(messages);
       setMessages(data);
       setLoading(false);
-
+      
+      socket.emit("join chat", selectedChat._id);
     
     } catch (error) {
       toast({
@@ -97,9 +111,22 @@ const SingleChats = ({setFetchAgain,fetchAgain}) => {
 
   useEffect(() => {
     fetchMessages();
-
-    // eslint-disable-next-line
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        
+        
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
+  
   return (
     <>
       {selectedChat?
