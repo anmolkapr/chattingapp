@@ -1,6 +1,6 @@
 TALK SHAWK APP
 
-VIDEO LINK = https://youtu.be/33r-Ec2aod8
+VIDEO LINK = https://www.youtube.com/watch?v=qZg0V2JuW7A&t=197s
 
 TECHNOLOGIES USED = Mongo DB, Socket io, React , Express, Node Js,Chakra UI
 
